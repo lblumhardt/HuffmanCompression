@@ -6,7 +6,7 @@
 typedef unsigned char byte;
 
 using namespace std;
-
+//test
 /** A class, instances of which are nodes in an HCTree.
  */
 class HCNode {
