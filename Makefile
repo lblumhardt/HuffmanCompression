@@ -10,7 +10,7 @@ compress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
 
 uncompress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
 
-HCTree.o: BitInputStream.hpp BitOutputStream.hpp HCNode.hpp HCTree.hpp
+HCTree.o: HCNode.hpp HCTree.hpp
 
 HCNode.o: HCNode.hpp
 
