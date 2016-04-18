@@ -33,6 +33,7 @@ void HCTree::build(const vector<int>& freqs) {
     pq.pop();
     HCNode* second = pq.top();
     pq.pop();
+    cout << "the two smallest nodes are " << smallest->symbol << " " << second->symbol << "\n";
     frequencySum = smallest->count + second->count;
     HCNode* parent = new HCNode(frequencySum, smallest->symbol, smallest, second, 0);
     smallest->p = parent;
@@ -41,24 +42,69 @@ void HCTree::build(const vector<int>& freqs) {
   }    
     
   //right here pq should hold the pointer to the top node of huffman tree 
-  
+  root = pq.top();  
 }
 
 void HCTree::encode(byte symbol, ofstream& out) const {
-
+  
+  if(!out.is_open()) {
+    cout << "The input file wasn't properly opened. \n";
+    return;
+  } 
+  vector<unsigned char> code;
   HCNode* curr = leaves[symbol];
+  while(curr->p != 0) {
+    //is this going to be backwards? perhaps. lets test
+    if (curr->p->c0 == curr){
+      //its 0
+      //out << '0';
+      code.push_back('0');
+    }
+    else {
+      //its 1
+      //out << '1';
+      code.push_back('1');
+    } 
+    curr = curr->p;
+  }
+  while(!code.empty()) {
+    out << code.back();
+    code.pop_back();
+  }
   
 }
 
+
+/* decode method. Takes the input from the ifstream and traverses the Huffman
+ * Tree according to the bits (actually ASCII 1s and 0s) to determine what 
+ * symbol this binary string represents
+ * */
 int HCTree::decode(ifstream& in) const {
   
   unsigned char nextChar;
   int next;
-  in.open("testerFile.txt");
-  while((next = in.get()) != EOF) {
-    nextChar = (unsigned char)next;
-    cout << next;
-    cout << nextChar;
+ 
+  //checking if file was opened correctly
+  if(!in.is_open()) {
+    cout << "The input file wasn't properly opened. \n";
+    return -1;
   }
-  return 1;
+
+  //descends the huffman tree
+  HCNode* curr = root; 
+  //double check this while condition. i think it works bc tree is full
+  while((next = in.get()) != EOF && curr->c1 != 0) {
+    nextChar = (unsigned char)next;
+    if(nextChar == '1') {
+      curr = curr->c1;
+    }
+    if(nextChar == '0') {
+      curr = curr->c0;
+    }
+    if(curr->c1 == 0) {
+      break;
+    } 
+    //cout << nextChar;
+  }
+  return (unsigned char)curr->symbol;
 }
