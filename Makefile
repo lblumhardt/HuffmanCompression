@@ -6,10 +6,6 @@ LDFLAGS=-g
 
 all: compress uncompress
 
-compress: HCNode.o HCTree.o
-
-uncompress: HCNode.o HCTree.o
-
 HCTree.o: HCNode.hpp HCTree.hpp
 
 HCNode.o: HCNode.hpp
@@ -18,10 +14,10 @@ BitOutputStream.o: BitOutputStream.hpp
 
 BitInputStream.o: BitInputStream.hpp
 
-cpress:
+compress:
 	g++ -g -o compress HCNode.cpp compress.cpp
 
-upress:
+uncompress:
 	g++ -g -o uncompress HCNode.cpp uncompress.cpp
 
 clean:
