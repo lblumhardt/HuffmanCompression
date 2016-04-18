@@ -6,18 +6,18 @@
 
 
 HCTree::~HCTree() {
-  cout << "destructor \n";
+  deleteAll(root);
 }
 
 void HCTree::build(const vector<int>& freqs) {
-  cout << "entering build \n";
+  
   
   //loop through freqs and makes HCNode pointers to put into leaves 
   vector<int>::const_iterator it = freqs.begin(); 
   std::priority_queue<HCNode*, std::vector<HCNode*>, HCNodePtrComp> pq;
   for(int i = 0; i < freqs.size(); i++) { 
     if(freqs[i] != 0) {
-      cout << "im making a node " << freqs[i] << "\n";
+      
       HCNode* temp = new HCNode(freqs[i], i, 0, 0, 0);
       leaves[i] = temp;
       
@@ -33,7 +33,7 @@ void HCTree::build(const vector<int>& freqs) {
     pq.pop();
     HCNode* second = pq.top();
     pq.pop();
-    cout << "the two smallest nodes are " << smallest->symbol << " " << second->symbol << "\n";
+    
     frequencySum = smallest->count + second->count;
     HCNode* parent = new HCNode(frequencySum, smallest->symbol, smallest, second, 0);
     smallest->p = parent;
@@ -42,7 +42,8 @@ void HCTree::build(const vector<int>& freqs) {
   }    
     
   //right here pq should hold the pointer to the top node of huffman tree 
-  root = pq.top();  
+  root = pq.top(); 
+   
 }
 
 void HCTree::encode(byte symbol, ofstream& out) const {
@@ -108,3 +109,14 @@ int HCTree::decode(ifstream& in) const {
   }
   return (unsigned char)curr->symbol;
 }
+
+
+void HCTree::deleteAll(HCNode* curr) {
+  if(curr == 0) {
+    return;
+  }
+  deleteAll(curr->c1);
+  deleteAll(curr->c0);
+  delete curr;
+}
+
