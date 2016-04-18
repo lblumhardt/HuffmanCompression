@@ -17,7 +17,7 @@ void HCTree::build(const vector<int>& freqs) {
   std::priority_queue<HCNode*, std::vector<HCNode*>, HCNodePtrComp> pq;
   for(int i = 0; i < freqs.size(); i++) { 
     if(freqs[i] != 0) {
-      
+        
       HCNode* temp = new HCNode(freqs[i], i, 0, 0, 0);
       leaves[i] = temp;
       
@@ -28,6 +28,14 @@ void HCTree::build(const vector<int>& freqs) {
  
   //combines the two least frequent nodes at a time until a huffman tree is built 
   int frequencySum = 0;
+  if(pq.size() == 1) {
+    HCNode* curr = pq.top();
+    HCNode* newRoot = new HCNode(curr->count, curr->symbol, curr, 0, 0);
+    curr->p = newRoot;
+    cout << "made single node of frequency " << curr->count << "\n";
+    root = newRoot;
+    return;   
+  }
   while(pq.size() > 1) {
     HCNode* smallest = pq.top();
     pq.pop();
@@ -40,7 +48,11 @@ void HCTree::build(const vector<int>& freqs) {
     second->p = parent;
     pq.push(parent); 
   }    
-    
+  if(pq.size() == 0) {
+    HCNode* empty = new HCNode(0, -1, 0, 0, 0);
+    root = empty;
+    return;
+  }  
   //right here pq should hold the pointer to the top node of huffman tree 
   root = pq.top(); 
    
@@ -93,8 +105,16 @@ int HCTree::decode(ifstream& in) const {
 
   //descends the huffman tree
   HCNode* curr = root; 
+  if(root->symbol == -1) {
+    return -1;
+  }
+  if(curr->c0 == 0 && curr->c1 == 0) {
+    return -1;
+  }  
+
   //double check this while condition. i think it works bc tree is full
-  while((next = in.get()) != EOF && curr->c1 != 0) {
+  while(in.peek() != EOF && curr->c0 != 0) {
+    next = in.get();
     nextChar = (unsigned char)next;
     if(nextChar == '1') {
       curr = curr->c1;

@@ -28,26 +28,28 @@ int main(int argc, char* argv[]) {
   if(input.peek()!= EOF) {
    
     while((nextByte = input.get()) != EOF) {
-      cout << "we entered? \n";
+     // cout << "we entered? \n";
       nextChar = (unsigned char)nextByte;
       vec[nextByte] = vec[nextByte] + 1;
     } 
   }
-  
+  //cout << "derr .get isn't the prob \n"; 
   
   input.close();
-  
+   //cout << "derr close isn't the prob \n"; 
+
   //build the Huffman Tree with frequency vector
   HCTree t;
   t.build(vec);
-  
+   //cout << "derr build isn't the prob \n"; 
+
   std::ofstream out(argv[2], std::ofstream::out);
   //std::ifstream input2 (argv[1], std::ifstream::in);
   
   //write the header so file can be decoded
   for(int i=0; i < vec.size(); i++) {
     out << vec[i] << "\n"; 
-    cout << "should get 256 o deez \n";
+    //cout << "should get 256 o deez \n";
   }
   
   //encodes each symbol and writes to the output  

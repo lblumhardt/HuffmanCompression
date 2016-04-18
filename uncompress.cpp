@@ -27,12 +27,24 @@ int main(int argc, char* argv[]) {
   t.build(freqs);
   int nextByte;
   unsigned char nextChar;
-  
+  int decodedInt;
   
   while((nextByte = input.peek()) != EOF) {
-    nextChar = (unsigned char)t.decode(input);
-    cout << nextChar;
-    output << nextChar;
+    decodedInt = t.decode(input);
+    //cout << decodedInt;
+    
+    if(decodedInt == -1) {
+      break;
+    }
+    if(decodedInt != -1) {
+     
+    
+    
+      nextChar = (unsigned char)decodedInt;
+      //cout << nextChar;
+    
+      output << nextChar;
+    }
   }
   
   input.close();
