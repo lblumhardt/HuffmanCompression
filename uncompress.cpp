@@ -28,11 +28,11 @@ int main(int argc, char* argv[]) {
   int nextByte;
   unsigned char nextChar;
   int decodedInt;
-  
+  int i = 0; 
   while((nextByte = input.peek()) != EOF) {
     decodedInt = t.decode(input);
-    //cout << decodedInt;
-    
+    cout << decodedInt;
+    i++;
     if(decodedInt == -1) {
       break;
     }
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
       output << nextChar;
     }
   }
-  
+  cout << "I called decode " << i << " times \n";
   input.close();
   output.close();
 }

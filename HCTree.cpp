@@ -33,6 +33,7 @@ void HCTree::build(const vector<int>& freqs) {
     HCNode* newRoot = new HCNode(curr->count, curr->symbol, curr, 0, 0);
     curr->p = newRoot;
     cout << "made single node of frequency " << curr->count << "\n";
+    cout << "with the char symbol of " << curr->symbol << "\n";
     root = newRoot;
     return;   
   }
