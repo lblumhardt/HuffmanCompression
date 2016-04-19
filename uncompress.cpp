@@ -1,3 +1,7 @@
+/* Lucas Blumhardt A12020745
+ * uncompress program. Creates a huffman tree from the input file's header
+ * and decodes the string of ASCII 1s and 0s in the file
+ * */
 #include "HCTree.cpp"
 #include <vector>
 #include <iostream> 
@@ -28,25 +32,20 @@ int main(int argc, char* argv[]) {
   int nextByte;
   unsigned char nextChar;
   int decodedInt;
-  int i = 0; 
+   
   while((nextByte = input.peek()) != EOF) {
     decodedInt = t.decode(input);
-    cout << decodedInt;
-    i++;
+    
+    //corner case the file is meant to be empty
     if(decodedInt == -1) {
       break;
     }
     if(decodedInt != -1) {
-     
-    
-    
       nextChar = (unsigned char)decodedInt;
-      //cout << nextChar;
-    
       output << nextChar;
     }
   }
-  cout << "I called decode " << i << " times \n";
+  
   input.close();
   output.close();
 }
