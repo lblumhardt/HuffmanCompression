@@ -99,6 +99,28 @@ void HCTree::encode(byte symbol, ofstream& out) const {
   
 }
 
+void HCTree::encode(byte symbol, BitOutputStream& out) const {
+  vector<int> code;
+  HCNode* curr = leaves[symbol];
+  while(curr->p != 0) {
+    //is this going to be backwards? perhaps. lets test
+    if (curr->p->c0 == curr){
+      //its 0 
+      code.push_back(0);
+    }
+    else {
+      //its 1
+      code.push_back(1);
+    } 
+    curr = curr->p;
+  }
+  while(!code.empty()) {
+    out.writeBit(code.back());
+    code.pop_back();
+  }
+  out.flush();
+}
+
 
 /* decode method. Takes the input from the ifstream and traverses the Huffman
  * Tree according to the bits (actually ASCII 1s and 0s) to determine what 

@@ -6,7 +6,7 @@
 #include <fstream>
 #include "HCNode.hpp"
 //#include "BitInputStream.hpp"
-//#include "BitOutputStream.hpp"
+#include "BitOutputStream.hpp"
 
 using namespace std;
 
@@ -53,7 +53,7 @@ public:
      *  PRECONDITION: build() has been called, to create the coding
      *  tree, and initialize root pointer and leaves vector.
      */
-    void encode(byte symbol /*BitOutputStream& out*/ ) const;
+    void encode(byte symbol, BitOutputStream& out) const;
 
     /** Write to the given ofstream
      *  the sequence of bits (as ASCII) coding the given symbol.
