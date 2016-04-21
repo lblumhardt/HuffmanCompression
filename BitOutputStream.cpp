@@ -6,7 +6,9 @@
 
 /* send the buffer to the output stream and clear it */
 void BitOutputStream::flush() {
+  cout << "flushing the byte" <<(int) buf << " \n";
   out.put(buf);
+  //out.write((char*)&buf, sizeof(buf));
   out.flush();
   buf = nbits = 0;
 }
@@ -27,6 +29,11 @@ void BitOutputStream::writeBit(int i) {
     buf = buf | mask;
   } 
   
+  if(i == 0) {
+    mask = mask << (7 - nbits);
+    mask = ~mask;
+    buf = buf & mask;
+  } 
   //if the int is 0, just incrementing nbits is all that's needed
   nbits++; 
 }

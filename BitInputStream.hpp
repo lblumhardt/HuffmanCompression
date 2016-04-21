@@ -8,16 +8,14 @@ using namespace std;
 class BitInputStream {
 private:
   char buf;
+  int first;
   int nbits;        //how many bits have been read from the buffer
   istream& in;
 public:
 
   /* Initialize a BitInputStream that will use the given istream for input
  * */
-  BitInputStream(istream & is) : in(is) {
-    buf = 0;
-    nbits = 8;
-  }
+  BitInputStream(istream & is);
 
   /* Fill the buffer from the input */
   void fill();

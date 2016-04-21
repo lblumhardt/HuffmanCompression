@@ -14,11 +14,11 @@ BitOutputStream.o: BitOutputStream.hpp
 
 BitInputStream.o: BitInputStream.hpp
 
-compress: HCTree.cpp
-	g++ -g -o compress HCNode.cpp compress.cpp
+compress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
+	g++ -g -o compress compress.cpp BitOutputStream.cpp BitInputStream.cpp HCNode.cpp	
 
-uncompress: HCTree.cpp
-	g++ -g -o uncompress HCNode.cpp uncompress.cpp
+uncompress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o 
+	g++ -g -o uncompress uncompress.cpp BitOutputStream.cpp BitInputStream.cpp HCNode.cpp	
 
 clean:
 	rm -f compress uncompress *.o core*

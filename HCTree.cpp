@@ -55,6 +55,7 @@ void HCTree::build(const vector<int>& freqs) {
     HCNode* parent = new HCNode(frequencySum, smallest->symbol, smallest, second, 0);
     smallest->p = parent;
     second->p = parent;
+    cout << parent->symbol << " is the parent of 0 child " << smallest->symbol << " and 1 child " << second->symbol << "\n";
     pq.push(parent); 
   }    
   
@@ -101,9 +102,10 @@ void HCTree::encode(byte symbol, ofstream& out) const {
 
 void HCTree::encode(byte symbol, BitOutputStream& out) const {
   vector<int> code;
+  cout << "we are encoding " << symbol << "\n";
   HCNode* curr = leaves[symbol];
   while(curr->p != 0) {
-    //is this going to be backwards? perhaps. lets test
+    
     if (curr->p->c0 == curr){
       //its 0 
       code.push_back(0);
@@ -114,11 +116,15 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const {
     } 
     curr = curr->p;
   }
+
+  int temp;
   while(!code.empty()) {
-    out.writeBit(code.back());
+    temp = code.back();
+    //cout << "passing " << temp << " to writeBit \n";
+    out.writeBit(temp);
     code.pop_back();
   }
-  out.flush();
+  //out.flush();
 }
 
 
@@ -143,9 +149,7 @@ int HCTree::decode(ifstream& in) const {
 /*
   if(root->symbol == -1) {
     return -1;
-  }*/
- 
-  //corner case where file is empty
+*/  //corner case where file is empty
   if(curr->c0 == 0 && curr->c1 == 0) {
     return -1;
   }  
@@ -166,6 +170,46 @@ int HCTree::decode(ifstream& in) const {
   }
   return (unsigned char)curr->symbol;
 }
+
+/** Return symbol coded in the next sequence of bits from the stream.
+ *  PRECONDITION: build() has been called, to create the coding
+ *  tree, and initialize root pointer and leaves vector.
+ */
+int HCTree::decode(BitInputStream& in) const {
+  
+  HCNode* curr = root;
+  if(curr->c0 == 0 && curr->c1 == 0) {
+    return -1;
+  }
+  
+  int bit;
+  while(true) {
+    bit = in.readBit();
+    if(bit == 1) {
+      curr = curr->c1;
+    }
+    if(bit == 0) {
+      curr = curr->c0;
+    }
+    if(bit == -1) {
+      return -1;
+    } 
+    //ut << "and curr's symbol is " << curr->symbol << "\n";
+    
+    if(curr->c1 == 0) {
+      cout << "leaving decode now ";
+      cout << "and curr's symbol is " << curr->symbol << "\n";
+      break;
+    }
+  }
+  //at this point curr may not be a leaf
+  unsigned char currentSym = curr->symbol;
+  if(leaves[currentSym] != curr) {
+    return -1;
+  }
+  return (unsigned char)curr->symbol;
+}
+
 
 
 void HCTree::deleteAll(HCNode* curr) {

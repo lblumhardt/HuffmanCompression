@@ -15,9 +15,9 @@ int main(int argc, char* argv[]) {
     return -1;
   } 
   
-  std::ifstream input(argv[1], std::ifstream::in);
+  std::ifstream input(argv[1], ios::binary);
  
-  std::ifstream input2(argv[1], std::ifstream::in);
+  std::ifstream input2(argv[1], ios::binary);
   unsigned char nextChar;
   int nextByte;
   
@@ -33,31 +33,37 @@ int main(int argc, char* argv[]) {
       vec[nextByte] = vec[nextByte] + 1;
     } 
   }
-  //cout << "derr .get isn't the prob \n"; 
-  
+ 
   input.close();
-   //cout << "derr close isn't the prob \n"; 
-
+  
   //build the Huffman Tree with frequency vector
   HCTree t;
   t.build(vec);
-   //cout << "derr build isn't the prob \n"; 
 
   std::ofstream out(argv[2], std::ofstream::out);
-  //std::ifstream input2 (argv[1], std::ifstream::in);
-  
+    
   //write the header so file can be decoded
   for(int i=0; i < vec.size(); i++) {
     out << vec[i] << "\n"; 
     //cout << "should get 256 o deez \n";
+    //out.write((char*)&vec[i],3*sizeof(char));
   }
-  
-  //encodes each symbol and writes to the output  
+
+//this part of the code is for the ASCII encoding. not binary  
+/*  //encodes each symbol and writes to the output  
   while((nextByte = input2.get()) != EOF) {
     nextChar = (unsigned char)nextByte;
     t.encode(nextChar, out);
   }
- 
+*/
+
+  BitOutputStream bitout(out);
+  while((nextByte = input2.get()) != EOF) {
+    nextChar = (unsigned char)nextByte;
+    cout << "encoding " << nextChar << "\n";
+    t.encode(nextChar, bitout);
+  } 
+  bitout.flush();
   out.close();
   input2.close();
   return 1;
