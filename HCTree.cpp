@@ -55,7 +55,7 @@ void HCTree::build(const vector<int>& freqs) {
     HCNode* parent = new HCNode(frequencySum, smallest->symbol, smallest, second, 0);
     smallest->p = parent;
     second->p = parent;
-    cout << parent->symbol << " is the parent of 0 child " << smallest->symbol << " and 1 child " << second->symbol << "\n";
+    //cout << parent->symbol << " is the parent of 0 child " << smallest->symbol << " and 1 child " << second->symbol << "\n";
     pq.push(parent); 
   }    
   
@@ -102,7 +102,7 @@ void HCTree::encode(byte symbol, ofstream& out) const {
 
 void HCTree::encode(byte symbol, BitOutputStream& out) const {
   vector<int> code;
-  cout << "we are encoding " << symbol << "\n";
+  //cout << "we are encoding " << symbol << "\n";
   HCNode* curr = leaves[symbol];
   while(curr->p != 0) {
     
@@ -139,7 +139,7 @@ int HCTree::decode(ifstream& in) const {
  
   //checking if file was opened correctly
   if(!in.is_open()) {
-    cout << "The input file wasn't properly opened. \n";
+    //cout << "The input file wasn't properly opened. \n";
     return -1;
   }
 
@@ -197,8 +197,8 @@ int HCTree::decode(BitInputStream& in) const {
     //ut << "and curr's symbol is " << curr->symbol << "\n";
     
     if(curr->c1 == 0) {
-      cout << "leaving decode now ";
-      cout << "and curr's symbol is " << curr->symbol << "\n";
+      //cout << "leaving decode now ";
+      //cout << "and curr's symbol is " << curr->symbol << "\n";
       break;
     }
   }

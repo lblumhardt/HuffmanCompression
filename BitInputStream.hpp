@@ -8,7 +8,7 @@ using namespace std;
 class BitInputStream {
 private:
   char buf;
-  int first;
+  //int first;
   int nbits;        //how many bits have been read from the buffer
   istream& in;
 public:

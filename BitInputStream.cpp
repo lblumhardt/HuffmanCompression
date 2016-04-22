@@ -8,7 +8,6 @@
 
 BitInputStream::BitInputStream(istream & is) : in(is) {
     buf = 0;
-    first = 1;
     nbits = 8;
 }
 
@@ -17,13 +16,13 @@ BitInputStream::BitInputStream(istream & is) : in(is) {
 void BitInputStream::fill() {
   buf = in.get();
   //in.read((char*)&buf, sizeof(buf));
-  if(first == 1) {
-    buf = in.get();
-    first = 0;
-  }
-  cout << "\n \n \n";
-  cout << "we calling fill again and our buffer is " << std::bitset<8>(buf) << " \n";
-  cout << "\n \n \n";
+  //if(first == 1) {
+  //  buf = in.get();
+  //  first = 0;
+  //}
+  //ut << "\n \n \n";
+  //cout << "we calling fill again and our buffer is " << std::bitset<8>(buf) << " \n";
+  //cout << "\n \n \n";
   nbits = 0;
 }
 
@@ -42,11 +41,11 @@ int BitInputStream::readBit() {
   mask = mask & buf;
   nbits++;
   if(mask == 0) {
-    cout << "bit being returned is 0 \n";
+    //cout << "bit being returned is 0 \n";
     return 0;
   }
   else {
-    cout << "bit being returned is 1 \n";
+    //cout << "bit being returned is 1 \n";
     return 1;
   } 
  

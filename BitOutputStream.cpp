@@ -6,7 +6,7 @@
 
 /* send the buffer to the output stream and clear it */
 void BitOutputStream::flush() {
-  cout << "flushing the byte" <<(int) buf << " \n";
+  //cout << "flushing the byte" <<(int) buf << " \n";
   out.put(buf);
   //out.write((char*)&buf, sizeof(buf));
   out.flush();

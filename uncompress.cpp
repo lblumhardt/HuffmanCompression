@@ -22,9 +22,15 @@ int main(int argc, char* argv[]) {
   BitInputStream bitin(input); 
   vector<int> freqs(256,0);
   int temp;
+  if(input.peek() == EOF) {
+    input.close();
+    output.close();
+    return 1;
+  }
   //converting the header into a vector to build a huffman tree with
   for(int i=0; i < freqs.size(); i++) {
-    input >> temp; 
+    input.read((char*)&temp, 3*sizeof(char));
+    //input >> temp; 
     freqs[i] = temp;
     numOfBits = numOfBits + temp; 
   }
@@ -36,7 +42,7 @@ int main(int argc, char* argv[]) {
   int currentNumOfBits = 0;
   while(/*input.peek() != EOF*/ true) {
     decodedInt = t.decode(bitin);
-    cout << "decode returned this int " << decodedInt << "\n"; 
+    //cout << "decode returned this int " << decodedInt << "\n"; 
     currentNumOfBits++;
     //corner case the file is meant to be empty
     if(decodedInt == -1) {
