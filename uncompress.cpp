@@ -30,33 +30,33 @@ int main(int argc, char* argv[]) {
   //converting the header into a vector to build a huffman tree with
   for(int i=0; i < freqs.size(); i++) {
     input.read((char*)&temp, 3*sizeof(char));
-    //input >> temp; 
     freqs[i] = temp;
     numOfBits = numOfBits + temp; 
   }
   
-  //everything above works p good
   t.build(freqs);
   unsigned char nextChar;
   int decodedInt;
   int currentNumOfBits = 0;
-  while(/*input.peek() != EOF*/ true) {
+  while(true) {
     decodedInt = t.decode(bitin);
-    //cout << "decode returned this int " << decodedInt << "\n"; 
     currentNumOfBits++;
-    //corner case the file is meant to be empty
+   
+    //corner case if the file is empty
     if(decodedInt == -1) {
       break;
     }
+    
     if(decodedInt != -1) {
       nextChar = (unsigned char)decodedInt;
       output << nextChar;
     }
+    //all chars have been decoded if true
     if(currentNumOfBits == numOfBits) {
       break;
     }
   }
-  //output << (unsigned char)t.decode(bitin); 
+  
   input.close();
   output.close();
 }

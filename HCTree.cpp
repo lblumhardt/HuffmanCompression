@@ -100,9 +100,11 @@ void HCTree::encode(byte symbol, ofstream& out) const {
   
 }
 
+/* encodes the byte passed by finding it in the leaves vector and traversing
+ * up the Huffman Tree and recording the 0 and 1 children
+ * */
 void HCTree::encode(byte symbol, BitOutputStream& out) const {
   vector<int> code;
-  //cout << "we are encoding " << symbol << "\n";
   HCNode* curr = leaves[symbol];
   while(curr->p != 0) {
     
@@ -120,11 +122,9 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const {
   int temp;
   while(!code.empty()) {
     temp = code.back();
-    //cout << "passing " << temp << " to writeBit \n";
     out.writeBit(temp);
     code.pop_back();
   }
-  //out.flush();
 }
 
 
@@ -183,6 +183,8 @@ int HCTree::decode(BitInputStream& in) const {
   }
   
   int bit;
+
+  //read bit by bit until we have found an encoded char!
   while(true) {
     bit = in.readBit();
     if(bit == 1) {
@@ -194,11 +196,8 @@ int HCTree::decode(BitInputStream& in) const {
     if(bit == -1) {
       return -1;
     } 
-    //ut << "and curr's symbol is " << curr->symbol << "\n";
-    
+        
     if(curr->c1 == 0) {
-      //cout << "leaving decode now ";
-      //cout << "and curr's symbol is " << curr->symbol << "\n";
       break;
     }
   }

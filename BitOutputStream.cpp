@@ -1,3 +1,7 @@
+/* Lucas Blumhardt A12020745
+ * This class fills a 1 byte buffer bit by bit until the buffer is full, then
+ * writes it to the ostream 
+ * */
 #include "BitOutputStream.hpp"
 #include <iostream>
 #include <algorithm>
@@ -6,9 +10,7 @@
 
 /* send the buffer to the output stream and clear it */
 void BitOutputStream::flush() {
-  //cout << "flushing the byte" <<(int) buf << " \n";
   out.put(buf);
-  //out.write((char*)&buf, sizeof(buf));
   out.flush();
   buf = nbits = 0;
 }
@@ -28,12 +30,11 @@ void BitOutputStream::writeBit(int i) {
     mask = mask << (7 - nbits);
     buf = buf | mask;
   } 
-  
+  //if the int is 0, we must put the bit 0 into the buffer
   if(i == 0) {
     mask = mask << (7 - nbits);
     mask = ~mask;
     buf = buf & mask;
   } 
-  //if the int is 0, just incrementing nbits is all that's needed
   nbits++; 
 }
