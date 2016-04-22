@@ -30,10 +30,10 @@ int main(int argc, char* argv[]) {
   if(input.peek()!= EOF) {
     emptyFile = false;
     while((nextByte = input.get()) != EOF) {
-      cout << "we entered? \n";
+      //cout << "we entered? \n";
       nextChar = (unsigned char)nextByte;
       if(firstChar != nextChar) {
-        cout << "there is more than 1 type of char in herer \n";
+        //cout << "there is more than 1 type of char in herer \n";
         onlyOneChar = false;
       }
       vec[nextByte] = vec[nextByte] + 1;
